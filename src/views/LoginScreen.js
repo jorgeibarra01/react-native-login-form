@@ -1,6 +1,10 @@
 import React, {Component} from 'react';
-import {Button,Input,Card,CardSection} from '../components';
+import {Button,Input,Card,CardSection, Spinner} from '../components';
 import {View,StyleSheet, Text} from 'react-native';
+
+// Redux
+import {connect} from 'react-redux';
+import {emailChanged,passwordChanged,loginUser} from '../redux/actions';
 
 class LoginScreen extends Component {
 
@@ -10,16 +14,17 @@ class LoginScreen extends Component {
     }
 
     onEmailChange = (text) => {
-        // this.props.emailChanged(text)
+         this.props.emailChanged(text)
     }
 
     onPasswordChange = (text) => {
-        // this.props.passwordChanged(text);
+         this.props.passwordChanged(text);
     }
 
     onButtonPress = () => {
-        // const { email, password } = this.props;
-        // this.props.loginUser({ email, password });
+         const { email, password } = this.props;
+         console.log(this.props)
+         this.props.loginUser(this.props);
     }
 
     renderButton = () => {
@@ -48,6 +53,7 @@ class LoginScreen extends Component {
 
 
     render() {
+        const {email,password} = this.props;
         return (
             <Card>
                 <CardSection>
@@ -55,7 +61,7 @@ class LoginScreen extends Component {
                         label="Email"
                         placeholder="email@gmail.com"
                         onChangeText={this.onEmailChange}
-                        value={this.state.email}
+                        value={email}
                     />
                 </CardSection>
                 <CardSection>
@@ -64,7 +70,7 @@ class LoginScreen extends Component {
                         placeholder="password"
                         secureTextEntry
                         onChangeText={this.onPasswordChange}
-                        value={this.state.password}
+                        value={password}
                     />
                 </CardSection>
                 {this.renderError()}
@@ -85,6 +91,13 @@ const styles = StyleSheet.create({
     }
 });
 
+const mapStateToProps = state => {
+    return {
+        email: state.auth.email,
+        password: state.auth.password,
+        error: state.auth.error,
+        isLoading: state.auth.isLoading
+    }
+}
 
-
-export default LoginScreen;
+export default connect(mapStateToProps,{emailChanged,passwordChanged,loginUser}) (LoginScreen);

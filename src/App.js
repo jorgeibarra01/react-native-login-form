@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
+import firebase from 'firebase';
 import { View, Text, StyleSheet } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
@@ -57,21 +58,40 @@ const store = createStore(reducers, {}, compose(applyMiddleware(thunk)));
 
 
 
-const App = () => {
-    const { container, nav, navItem } = styles;
-    return (
-        <Provider store={store}>
-            {/* <View style={{flex: 1, marginTop: 25,}}>
+class App extends PureComponent {
+
+    // When the App component get's mounted Firebase will Initialize
+    componentDidMount() {
+        //** How to use Firebase AUTH and pick your AUTH connections
+        // https://firebase.google.com/docs/auth/web/start?authuser=0
+        // Initialize Firebase
+        const config = {
+            apiKey: "{API-KEY}",
+            authDomain: "{AUTH-DOMAIN.FIREBASEAPP.COM}",
+            databaseURL: "https://{DATABASE-URL}firebaseio.com",
+            projectId: "{PROJECT-ID}",
+            storageBucket: "{STORAGE-BUCKET.APPSPOT.COM}",
+            messagingSenderId: "{MESSAGING-SENDER-ID-CODE_HERE}"
+        };
+        // *** Uncomment this code to initialize Firebase
+        // firebase.initializeApp(config);
+    }
+    render() {
+        const { container, nav, navItem } = styles;
+        return (
+            <Provider store={store}>
+                {/* <View style={{flex: 1, marginTop: 25,}}>
                 <LoginScreen />
             </View> */}
-            {/* <RootStack /> // Giving Warning about isMounted is depricated (React Router Navigation) */}
-            {/* <reactRouterRender /> // React Router v4 Need to design the Header layout and flow for the project */}
-            <View>
-                <Header headerText="Login Screen" />
-                <LoginScreen />
-            </View>
-        </Provider>
-    );
+                {/* <RootStack /> // Giving Warning about isMounted is depricated (React Router Navigation) */}
+                {/* <reactRouterRender /> // React Router v4 Need to design the Header layout and flow for the project */}
+                <View>
+                    <Header headerText="Login Screen" />
+                    <LoginScreen />
+                </View>
+            </Provider>
+        );
+    }
 }
 
 const styles = StyleSheet.create({

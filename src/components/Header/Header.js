@@ -38,4 +38,3 @@ const styles = {
 // Make the compoenet available to other parts of the app
 export  {Header};
 
-// rallycoding.herokuapp.com/api/music_albums
